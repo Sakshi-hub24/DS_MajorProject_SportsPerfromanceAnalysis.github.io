@@ -9,7 +9,7 @@ print(df.head())
 
 # Data Preprocessing
 # Check for missing values
-print(df.isnull().sum())
+'''print(df.isnull().sum())
 # Check for duplicate rows
 print(df.duplicated().sum())
 #describe the dataset
@@ -84,37 +84,32 @@ plt.ylabel('Rating')
 plt.legend(title='Cluster')
 plt.tight_layout()
 plt.show()
-
+'''
 #perform regression analysis
 from sklearn.linear_model import LinearRegression
 # Define features and target variable
-# Use all numeric columns as feature variables
-X = df.select_dtypes(include=[np.number])
-y = df['team_name']  # Assuming team_name is the target variable for regression
-# Encode team_name as a numerical variable
-from sklearn.preprocessing import LabelEncoder
-le = LabelEncoder()
-y_encoded = le.fit_transform(y)
+# Use all numeric columns except 'speed' as feature variables
+X = df.select_dtypes(include=[np.number]).drop(columns=['speed'])
+y = df['speed']  # Use 'speed' as the target variable for regression
+
 # Fit the regression model
 model = LinearRegression()
-model.fit(X, y_encoded)
+model.fit(X, y)
 # Print coefficients
 print("Coefficients:", model.coef_)
 # Print intercept
 print("Intercept:", model.intercept_)
-# Predicting team names based on features
+# Predicting speed based on features
 predictions = model.predict(X)
-# Convert predictions back to team names
-predicted_team_names = le.inverse_transform(np.round(predictions).astype(int))
-# Display predictions
-print("Predicted Team Names:", predicted_team_names[:10])  # Display first 10 predictions
-# Visualize actual vs predicted team name encodings
+# Display first 10 predictions
+print("Predicted Speed:", predictions[:10])
+# Visualize actual vs predicted speed
 plt.figure(figsize=(10, 6))
-plt.scatter(y_encoded, predictions, color='blue', label='Predicted vs Actual')
-plt.plot([y_encoded.min(), y_encoded.max()], [y_encoded.min(), y_encoded.max()], 'r--', label='Ideal Fit')
-plt.title('Actual vs Predicted Encoded Team Names')
-plt.xlabel('Actual Encoded Team Names')
-plt.ylabel('Predicted Encoded Team Names')
+plt.scatter(y, predictions, color='blue', label='Predicted vs Actual')
+plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--', label='Ideal Fit')
+plt.title('Actual vs Predicted Speed')
+plt.xlabel('Actual Speed')
+plt.ylabel('Predicted Speed')
 plt.legend()
 plt.tight_layout()
 plt.show()
