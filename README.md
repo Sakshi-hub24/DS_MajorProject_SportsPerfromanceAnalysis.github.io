@@ -1,81 +1,94 @@
-# DS_MajorProject_SportsPerfromanceAnalysis.github.io
+# Sports Performance Analysis
 
-# 🏆 Sports Performance Analysis
+An end-to-end analytics project on **10,000 player records** across four sports. It combines Python (EDA, KMeans clustering, regression) with an interactive **Streamlit** app and a **Power BI** dashboard for exploring team and player performance.
 
-This project aims to analyze individual and team performance in various sports using data visualization and machine learning. It includes an interactive Streamlit app, a Power BI dashboard, and multiple Python scripts for regression, clustering, and KPI analysis.
+![Streamlit demo](SPA%20Streamlit/SSR%202.gif)
 
----
+## Dashboard preview
 
-## 📁 Project Structure
-- `sports_performance_data.csv` – Main dataset containing 10,000+ player records.
-- `sports_performance_with_clusters.csv` – Enhanced dataset with clustering results.
-- `DSstreamlit.py` – Streamlit app for regression, clustering, and tactical suggestions.
-- `DSPR2.py` – Python script for statistical plots, EDA, and regression visualization.
-- `Power BI Dashboard` – Visual analysis with slicers, KPI cards, bar/line charts, and cluster summaries.
+![Power BI dashboard](SPA%20Dashboard/dashboard.png)
 
----
+## Highlights
 
-## 🎯 Objectives
-- Analyze team and player performance using key stats.
-- Predict multiple performance outcomes using machine learning.
-- Visualize KPIs and trends through interactive dashboards.
-- Suggest tactical improvements using clustering and regression.
+- Cleaned and explored **10,000 player records** across 4 sports (Basketball, Cricket, Football, Hockey) and 4 teams.
+- Created **8 EDA visualizations**, such as goals vs speed, success rate vs passes completed, and team wins and losses with and without injuries.
+- Segmented players with **KMeans clustering** on performance metrics.
+- Built a **multi-output Random Forest regression** to model `goals` and `success_rate`, with feature-importance plots.
+- Built a **Streamlit** app with regression, clustering and top-performer views.
+- Built a **Power BI** dashboard with team, player and sport slicers and KPI cards for assists, goals, minutes played and saves.
 
----
+## Tech stack
 
-## 🛠️ Tools & Technologies
-- **Python**: Pandas, Matplotlib, Seaborn, Scikit-learn
-- **Streamlit**: For creating an interactive web app
-- **Power BI**: For building dynamic dashboards
-- **Machine Learning**: RandomForestRegressor, MultiOutputRegressor, KMeans
+| Area | Tools |
+|---|---|
+| Language | Python |
+| Data handling | Pandas, NumPy |
+| Visualization | Matplotlib, Seaborn, Power BI |
+| Machine learning | scikit-learn (KMeans, RandomForestRegressor, MultiOutputRegressor) |
+| App | Streamlit |
 
----
+## Dataset
 
-## 📊 Key Features
+- Source: public Kaggle dataset, included in this repo as `sports_performance_data.csv`.
+- 10,000 rows covering player and team stats such as `goals`, `assists`, `saves`, `passes_completed`, `minutes_played`, `speed`, `injuries`, `matches_played`, `matches_won`, `matches_lost`, `score` and `success_rate`, plus `sport`, `team_name` and `player_name`.
+- The data appears to be synthetic: for example, the correlations between goals, speed, assists and success rate are close to zero. The project demonstrates the **analytics workflow and tooling**, not real sporting conclusions.
 
-### Streamlit App (`DSstreamlit.py`)
-- 📌 Multi-target regression to predict both `goals` and `success_rate`
-- 🔍 Feature importance plots for actionable insights
-- 🔁 KMeans clustering to segment players by performance
-- 🧠 Tactical suggestions for top players based on goals and efficiency
-- 📈 Clean, responsive UI with compact charts
+## Approach
 
-### Power BI Dashboard
-- ✅ Filters by team, player, and sport
-- 📊 KPI cards showing goals, assists, minutes played, and saves
-- 📉 Analysis of injuries vs performance
-- 📚 Clustering-based comparisons across sports
+1. **Clean and explore:** check missing values and duplicates, summarize the data, and visualize distributions and relationships.
+2. **Cluster:** group players with KMeans, saved to `sports_performance_with_clusters.csv`.
+3. **Model:** fit a multi-output Random Forest for `goals` and `success_rate` using assists, saves, passes completed, minutes played, injuries and speed.
+4. **Interpret:** plot feature importances and list top performers.
+5. **Present:** deliver the results in Streamlit and Power BI.
 
----
+## Project structure
 
-## 📁 How to Run
+```
+.
+├── SPA.PY/
+│   ├── DSPR2.py                          # EDA, clustering, regression
+│   ├── DSstreamlit.py                    # Streamlit app
+│   ├── sports_performance_with_clusters.csv
+│   └── V1.png ... V8.png                 # EDA charts
+├── SPA Streamlit/                        # demo recording
+├── SPA Dashboard/
+│   ├── Sports Performance.pbix
+│   └── dashboard.png
+├── SPA PPT/                              # project presentation (PDF and PPTX)
+├── sports_performance_data.csv
+└── README.md
+```
 
-### 📌 Streamlit App
-1. Install dependencies:
-    pip install streamlit pandas seaborn matplotlib scikit-learn
-2.Run the app:
-    streamlit run DSstreamlit.py
-3.Ensure the CSV file is in the same directory.
+## How to run
 
-📌 Power BI Report
-Open the .pbix file (or import the dataset into Power BI).
-Use slicers to explore performance by team or player.
+```bash
+# 1. Clone the repository
+git clone https://github.com/Sakshi-hub24/<repo-name>.git
+cd <repo-name>
 
-📈 Sample Visualizations
-Goals vs Speed
-Success Rate vs Passes Completed
-Clustered Players by Goals and Assists
-Team Wins/Losses with and without injuries
-KPI Cards: Assists, Saves, Minutes Played
+# 2. Install dependencies
+pip install pandas numpy scikit-learn matplotlib seaborn streamlit
 
-✅ Outcome
-Built an end-to-end analytical tool combining Python + Power BI
-Gained insights into what drives team and player performance
-Delivered regression-based forecasts and clustering-based player evaluation
-Created a user-friendly app usable by coaches, analysts, or sports managers
+# 3. Launch the app
+cd SPA.PY
+streamlit run DSstreamlit.py
+```
 
-📬 Contact
-Author: [Sakshi A]
+Make sure `sports_performance_data.csv` is in the same folder as the script (copy it from the repo root, or update the path in the code). To explore the dashboard, open `Sports Performance.pbix` in Power BI Desktop.
 
+## Limitations
 
+- The regression is currently fitted and scored on the same data, so the reported R² reflects training fit, not predictive performance. A proper train/test split shows that these features have little predictive power on this dataset.
+- The data looks synthetic, so findings should not be read as real-world insights.
+- Number of clusters and features for KMeans should be justified (for example with the elbow method or silhouette score).
 
+## Future improvements
+
+- Add a **train/test split with cross-validation** and compare against a baseline.
+- Choose the number of clusters with the elbow method and silhouette score.
+- Frame a classification problem (for example match win or loss) and report precision and recall.
+- Test the workflow on a real-world sports dataset.
+
+## Author
+
+**Sakshi Ambali**: [LinkedIn](https://linkedin.com/in/sakshi-ambali-83b0873a4) | [GitHub](https://github.com/Sakshi-hub24)
